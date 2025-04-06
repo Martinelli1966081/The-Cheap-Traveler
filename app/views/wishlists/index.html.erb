@@ -1,0 +1,27 @@
+
+<h1 class="titles">La tua Wishlist</h1>
+
+<% if @wishlists.any? %>
+    <table class="reservations-table">
+        <thead>
+            <tr>
+                <th>Struttura</th>
+                <th>Prezzo</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @wishlists.each do |wishlist| %>
+                <tr>
+                    <td> <%= wishlist.name_stay %> </td>
+                    <td> <%= wishlist.price %>€ </td>    
+                    <td> <%= button_to 'Rimuovi dalla Wishlist', wishlist_remove_from_wishlist_path(wishlist), method: :delete, data: { confirm: 'Sei sicuro di voler rimuovere questa struttura dalla tua wishlist?' }, class: 'edit-button' %> </td>
+                    <td> <%= link_to 'Vedi Dettagli', stay_path(wishlist.stay_id), class: 'edit-button', style:"width: 50%" %>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+<% else %>
+  <p>La tua wishlist è vuota.</p>
+<% end %>

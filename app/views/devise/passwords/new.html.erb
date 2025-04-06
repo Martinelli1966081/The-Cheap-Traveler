@@ -1,0 +1,24 @@
+<div class="contenitore">
+
+  <h1 style="font-weight: bold;">RECUPERA LA TUA PASSWORD!</h1>
+
+  <div class="container-psw">
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+           
+        <div class="campi">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder:"E-mail", class:"input" %>
+        </div>
+      
+
+        <div class="mt-5 mb-5">
+          <%= f.submit "Inviami istruzioni per il recupero", class:"google" %>
+        </div>
+    <% end %>
+
+    <div class="registrati">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+
+</div>

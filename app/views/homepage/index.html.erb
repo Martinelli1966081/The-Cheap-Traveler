@@ -1,0 +1,64 @@
+
+  <div class="poster mrt-2">
+      <div class="poster_img">
+          <%= image_tag "Coperta.png" %>
+      </div>
+      <div class="poster_content">
+          <h1 class="titles"> The Cheap Traveler </h1>
+          <p class="parag"> The Cheap Traveler è la tua guida ideale per viaggiare all'insegna della convenienza! Potrai prenotare hotel, voli, auto a noleggio e pacchetti vacanze con le migliori offerte sul mercato. </p>
+      </div>
+  </div>
+
+    <h2 class="best-title">Strutture più popolari</h2>
+    <div class="best-container">
+        <% @most_viewed_stays.limit(4).each do |stay| %>
+            <div class="best-card">
+                <h3 class="best-subtitle"><%= stay.name %></h3>
+                <p><%= stay.city %>, <%= stay.country %></p>
+                <%= link_to "Scopri la struttura", stay_path(stay), class:"edit-button" %>
+            </div>
+        <% end %>
+    </div>
+
+    <h2 class="best-title">Mete del momento</h2>
+    <div class="best-container">
+        <% @most_viewed_attractions.limit(4).each do |attraction| %>
+            <div class="best-card">
+                <h3 class="best-subtitle"><%= attraction.name %></h3>
+                <p><%= attraction.city %>, <%= attraction.country %></p>
+                <%= link_to "Scopri la meta", attraction_path(attraction), class:"edit-button" %>
+            </div>
+        <% end %>
+    </div>
+
+<% if current_user && !current_user.newsletter %>
+<div id="newsletter-popup" class="popup-overlay">
+  <div class="popup-content">
+    <h2>Iscriviti alla nostra Newsletter</h2>
+    <p>Ricevi offerte esclusive e promozioni personalizzate!</p>
+    
+    <%= form_with url: newsletter_subscriptions_path, method: :post, local: true do |form| %>
+      <%= form.email_field :email, placeholder: "Inserisci la tua email", required: true %>
+      <%= form.submit "Iscriviti", class: "popup-button" %>
+    <% end %>
+
+    <button id="close-popup">Chiudi</button>
+  </div>
+</div>
+<% end %>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+  const popup = document.getElementById("newsletter-popup");
+  const close = document.getElementById("close-popup");
+
+  if (popup) {
+    popup.style.display = "flex"; // Mostra popup al caricamento
+
+    close.addEventListener("click", () => {
+      popup.style.display = "none";
+    });
+  }
+});
+</script>

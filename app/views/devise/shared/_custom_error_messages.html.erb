@@ -1,0 +1,17 @@
+  <% if resource.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <h4>Impossibile effettuare la registrazione: </h4>
+      <ul>
+        <% resource.errors.each do |error| %>
+          <% attribute = error.attribute %>
+          <% label = case attribute %>
+            <% when :email then "Email" %>
+            <% when :password_confirmation then "Conferma Password" %>
+            <% when :username then "Username" %>
+            <% else attribute.to_s.humanize %>
+          <% end %>
+          <li><strong><%= label %>:</strong> <%= error.message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>

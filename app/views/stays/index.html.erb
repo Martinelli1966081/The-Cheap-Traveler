@@ -1,0 +1,84 @@
+<h1 class="titles" style="text-align:center"> Alloggi disponibili </h1>
+
+<div class="filter-banner">
+
+  <div class="filter-dropdown">
+    <a href="#" class="filter-toggle">Tipo di alloggio</a>
+    <div class="dropdown-content">
+      <%= form_with url: stays_path, method: :get, local: true, class: "filter-form" do |f| %>
+        <%= f.select :stay_type, options_for_select(["Tutte"] + Stay.distinct.pluck(:stay_type), params[:stay_type]), {}, { class: "filter-input", onchange: "this.form.submit();" } %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="filter-dropdown">
+    <a href="#" class="filter-toggle">Città</a>
+    <div class="dropdown-content">
+      <%= form_with url: stays_path, method: :get, local: true, class: "filter-form" do |f| %>
+        <%= f.select :city, options_for_select(["Tutte"] + Stay.distinct.pluck(:city), params[:city]), {}, { class: "filter-input", onchange: "this.form.submit();" } %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="filter-dropdown">
+    <a href="#" class="filter-toggle">Nazione</a>
+    <div class="dropdown-content">
+      <%= form_with url: stays_path, method: :get, local: true, class: "filter-form" do |f| %>
+        <%= f.select :country, options_for_select(["Tutte"] + Stay.distinct.pluck(:country), params[:country]), {}, { class: "filter-input", onchange: "this.form.submit();" } %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="filter-dropdown">
+    <%= link_to "Famiglie", stays_path(family:true), class:"filter-toggle" %>
+  </div>
+
+  <% if current_user && current_user.business %>
+    <div class="filter-dropdown">
+      <%= link_to "Lavoro", stays_path(job:true), class:"filter-toggle" %>
+    </div>
+  <% end %>
+</div>
+
+<div class= "stays-list">
+  <% @stays.each do |stay| %>
+    <div class="stay-card">
+      <% if stay.image.attached? %>
+        <%= image_tag stay.image%>
+      <% else %>
+        <%= image_tag "struttura.png" %>
+      <% end %>
+      
+      <div class="stay-info">
+        <h2> <%= link_to stay.name, stay_path(stay), class:"stay-title" %> </h2>
+        <p class="stay-location"><%= stay.city %>, <%= stay.country %> </p>
+        <p class="stay-price"> <%= stay.price %>€ </p>
+        <% if current_user %>
+          <%= button_to 'Aggiungi alla Wishlist', stay_add_to_wishlist_path(stay), method: :post, class: 'edit-button' %>
+          <%= button_to 'Crea viaggio di gruppo', travels_path(stay_id: stay.id), method: :post, class: 'edit-button mt-3' %>
+        <% end %>
+      </div>
+      </div>
+
+  <% end %>
+  
+</div>
+
+<h1 class="titles" style="text-align:center"> Viaggi di gruppo </h1>
+
+<div class= "stays-list">
+  <% Travel.all.each do |travel| %>
+    <div class="stay-card">
+      <div class="stay-info">
+        <h2 class="rental-title"> <%= travel.name_stay %> </h2>
+        <p class="stay-location"> Partecipanti: <%= travel.people %>/10 </p>
+        <p class="stay-price"> <%= travel.price %>€ </p>
+        <% if travel.people < 10 %>
+          <%= button_to 'Unisciti al gruppo', join_travel_path(travel), method: :post, class: 'edit-button mt-3' %>
+        <% else %>
+          <span class="bg-danger mt-2"> Gruppo pieno </span>
+        <% end %>
+      </div>
+      </div>
+  <% end %>
+</div>

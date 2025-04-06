@@ -1,0 +1,50 @@
+<div class="poster">
+    <div class="poster_content">
+    
+        <h3>La nostra sede</h3>
+        <%= embed_google_map("viale dello Scalo S. Lorenzo 82, Roma") %>
+
+        <div class="accordion accordion-flush" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        <h4>Informazioni Generali </h4>
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <strong>The Cheap Traveler:</strong> Qui sono contenute informazioni generali sul sito.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <h4>Richiedere assistenza </h4>
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <strong>Numero Verde:</strong> *** ****
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <h4>Segnala un problema </h4>
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <strong>Stai riscontrando problemi con il nostro sito?</strong> Contattaci al numero verde o via e-mail.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="poster_img">
+        <%= image_tag "assistenza.jpg" %>
+    </div>
+</div>
+

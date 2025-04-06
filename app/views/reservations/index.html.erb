@@ -1,0 +1,44 @@
+<h1 class="titles">Le mie prenotazioni</h1>
+
+<% if @reservations.empty? %>
+    <h2 style="font-weigth = bold;"> Non hai pronotazioni effettuate!</h2>
+<% else %>
+
+  <table class="reservations-table">
+    <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>Nome</th>
+        <th>Dettagli</th>
+        <th>Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @reservations.each do |reservation| %>
+        <tr>
+          <% if reservation.name_stay.present? %>
+            <td>Alloggio</td>
+            <td><%= reservation.name_stay %></td>
+            <td> notti: <%= reservation.days_counter %>, persone: <%= reservation.people%></td>
+            <td>Da: <%= reservation.check_in%>, a: <%= reservation.check_out%></td>
+          <% elsif reservation.code_taxi.present? %>
+            <td>Taxi</td>
+            <td>Codice: <%= reservation.code_taxi %></td>
+            <td> - </td>
+            <td> - </td>
+          <% elsif reservation.name_auto.present? %>
+            <td>Auto Noleggiata</td>
+            <td><%= reservation.name_auto %></td>
+            <td> giorni: <%= reservation.days_counter %></td>
+            <td>Da: <%= reservation.check_in%>, a: <%= reservation.check_out%></td>
+          <% end %>
+          <td>
+            <%= button_to 'Cancella', reservation_path(reservation.id), method: :delete, class: "edit-button" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<%end%>

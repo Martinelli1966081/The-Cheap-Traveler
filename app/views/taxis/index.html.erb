@@ -1,0 +1,123 @@
+<h1 class="titles" style="text-align:center">Prenota taxi per l'aeroporto</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Prenota il tuo viaggio</h2>
+        </div>
+        <div class="card-body">
+          <%= form_with(model: @taxi, url: taxis_path, local: true) do |f| %>
+            <div class="form-group mb-3">
+              <%= f.label :partenza, "Indirizzo di partenza", class: "form-label" %>
+              <%= f.text_field :partenza, class: 'form-control', id: 'start-address', required: true, placeholder: "Inserisci l'indirizzo di partenza" %>
+            </div>
+            
+            <div class="form-group mb-3">
+              <%= f.label :arrivo, "Indirizzo di destinazione", class: "form-label" %>
+              <%= f.text_field :arrivo, class: 'form-control', id: 'end-address', required: true, placeholder: "Inserisci l'indirizzo di destinazione" %>
+            </div>
+            
+            <div class="form-group mb-3">
+              <%= f.label :day, "Data e ora del viaggio", class: "form-label" %>
+              <%= f.datetime_local_field :day, class: 'form-control', required: true, min: DateTime.now.strftime("%Y-%m-%dT%H:%M") %>
+            </div>
+            
+            <div class="d-grid gap-2">
+              <button type="button" class="btn btn-primary" onclick="showRoute()">
+                <i class="bi bi-geo-alt"></i> Visualizza percorso
+              </button>
+            </div>
+            
+            <%= f.submit "Conferma prenotazione", class: 'btn btn-success mt-3 w-100', id: 'save-btn' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Mappa percorso</h2>
+        </div>
+        <div class="card-body p-0">
+          <div id="map-container" style="height: 400px; width: 100%;">
+            <iframe 
+              id="map-iframe" 
+              width="100%" 
+              height="100%" 
+              frameborder="0" 
+              style="border:0"
+              src="" 
+              allowfullscreen
+              loading="lazy">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Storico prenotazioni</h2>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead class="table-dark">
+                <tr>
+                  <th>Codice</th>
+                  <th>Partenza</th>
+                  <th>Arrivo</th>
+                  <th>Data/Ora</th>
+                  <th>Azioni</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @taxis.each do |taxi| %>
+                  <tr id="taxi-<%= taxi.id %>">
+                    <td><strong><%= taxi.code %></strong></td>
+                    <td><%= taxi.partenza %></td>
+                    <td><%= taxi.arrivo %></td>
+                    <td><%= l(taxi.day, format: :long) %></td>
+                    <td>
+          <%= button_to 'Elimina', { controller: 'taxis', action: 'destroy', id: taxi.id }, method: :delete %>
+ </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showRoute() {
+    const start = document.getElementById('start-address').value.trim();
+    const end = document.getElementById('end-address').value.trim();
+    
+    if (!start || !end) {
+      alert('Per favore, inserisci sia l\'indirizzo di partenza che quello di destinazione');
+      return;
+    }
+    
+    const iframe = document.getElementById('map-iframe');
+    const apiKey = '<%= ENV["GOOGLE_API_KEY"] %>';
+    const url = `https://www.google.com/maps/embed/v1/directions?key=${apiKey}&origin=${encodeURIComponent(start)}&destination=${encodeURIComponent(end)}&mode=driving&language=it`;
+    
+    iframe.src = url;
+  }
+  
+  // Autocompletamento indirizzi
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof google !== 'undefined') {
+      new google.maps.places.Autocomplete(document.getElementById('start-address'));
+      new google.maps.places.Autocomplete(document.getElementById('end-address'));
+    }
+  });
+</script>

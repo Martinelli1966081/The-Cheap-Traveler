@@ -1,0 +1,10 @@
+<h1>Conferma upgrade a Business</h1>
+<p>Inserisci la tua password attuale per confermare:</p>
+
+<%= form_tag complete_upgrade_business_index_path(token: params[:token]), method: :post do %>
+  <div>
+    <%= label_tag :password, "Password" %>
+    <%= password_field_tag :password, nil, required: true %>
+  </div>
+  <%= submit_tag "Conferma upgrade" %>
+<% end %>

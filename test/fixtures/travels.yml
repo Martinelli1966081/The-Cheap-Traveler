@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name_stay: MyString
+  creator: MyString
+  people: 1
+  price: 9.99
+
+two:
+  name_stay: MyString
+  creator: MyString
+  people: 1
+  price: 9.99

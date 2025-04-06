@@ -1,0 +1,13 @@
+<h1 class="titles" style="text-align:center"> Viaggi di gruppo creati </h1>
+
+<div class= "stays-list">
+  <% @my_travels.each do |travel| %>
+    <div class="stay-card">
+      <div class="stay-info">
+        <h1 class="rental-title"> <%= travel.name_stay %> </h1>
+        <p class="stay-location"> Partecipanti: <%= travel.people %>/10 </p>
+        <p class="stay-price"> <%= travel.price %>€ </p>
+      </div>
+    </div>
+  <% end %>
+</div>

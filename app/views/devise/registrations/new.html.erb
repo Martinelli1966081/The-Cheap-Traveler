@@ -1,0 +1,53 @@
+
+  <!DOCTYPE html>
+  <html lang="it">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>The Cheep Traveler</title>
+      <!-- Includi il file JavaScript -->
+      <%= javascript_include_tag 'sign_in' %>
+      <!-- Includi il tag per il token CSRF -->
+      <%= csrf_meta_tags %>
+  </head> 
+  <body>
+    <!-- Visualizzazione degli errori di Devise -->
+  <% if alert %>
+    <div class="alert alert-danger">
+      <%= alert %>
+    </div>
+  <% end %>
+
+  <%= render "devise/shared/custom_error_messages", resource: resource %>
+<div class="contenitore mrt-4">
+
+  <!-- Form di registrazione -->
+  
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { id: "signup-form" }) do |f| %>
+  <div class="accedi">
+    <h2 class="form-title"> Registrati </h2>
+    <div class=" campi">
+      <%= f.text_field :username, class: "input", required: true, placeholder: "User_Name" %>
+      <%= f.email_field :email, class: "input", autofocus: true, autocomplete: "email", required: true, placeholder: "E-mail" %>
+      <div class="hstack gap-5">
+      <%= f.password_field :password, class: "input", autocomplete: "new-password", required: true, id: 'user_password', placeholder: "Password" %>
+      <button type="button" class="btn btn-link-sm p-2 me-md-2" id="toggle-password">Mostra</button>
+      </div>
+      <div class="hstack gap-5">
+      <%= f.password_field :password_confirmation, class: "input", autocomplete: "new-password", required: true, id: 'user_password_confirmation', placeholder: "Conferma_Password" %>
+      <button type="button" class="btn btn-link-sm p-2 me-md-2" id="toggle-confirm-password">Mostra</button>
+      </div>
+    </div>
+    <div class="actions">
+      <%= f.submit "REGISTRATI", class: "btn-invio" %>
+    </div>
+  <% end %>
+    <div class="registrati">
+          <!-- Link per il login -->
+          <div class="devise-links">
+              <%= render "devise/shared/links" %>
+          </div>
+    </div>
+  </div>
+  </body>
+  </html>

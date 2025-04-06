@@ -1,0 +1,15 @@
+<h1 class="titles" style="text-align:center"> Noleggia l'auto per il tuo viaggio </h1>
+
+<div class= "stays-list">
+  <% @transports.each do |transport| %>
+    <% if !transport.rented %>
+      <div class="rental-card">
+        <h2 class="rental-title"> <%= transport.name %> </h2>
+        <p class="rental-location"><%= transport.city %> </p>
+        <p class="rental-price"><%= transport.price %> </p>
+        <%= link_to "Prenota ora", transport_path(transport), class:"rental-button"%>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+

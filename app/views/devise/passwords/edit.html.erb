@@ -1,0 +1,33 @@
+<div class="contenitore-profilo mrt-4">
+  <h2 class="titles">Cambia la tua password</h2>
+
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+    <div class="edit">
+      <%= render "devise/shared/error_messages", resource: resource %>
+      <div class="edit-field">
+        <%= f.hidden_field :reset_password_token, class:"input-edit" %>
+      </div>
+
+      <div class="field edit-field">
+        <%= f.label :password, "Nuova password", class:"label-edit" %><br />
+        <% if @minimum_password_length %>
+          <em>(minimo <%= @minimum_password_length %> caratteri)</em><br />
+        <% end %>
+        <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class:"input-edit" %>
+      </div>
+
+      <div class="field edit-field">
+        <%= f.label :password_confirmation, "Conferma nuova password", class:"label-edit" %><br />
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class:"input-edit" %>
+      </div>
+
+      <div class="actions mt-5">
+        <%= f.submit "Cambia password", class:"edit-button" %>
+      </div>
+    </div>
+  <% end %>
+  
+  <div class="edit">
+    <%= render "devise/shared/links" %>
+  </div>
+</div>

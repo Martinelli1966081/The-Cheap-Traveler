@@ -1,0 +1,40 @@
+<h1 class="titles" style="text-align:center"> Mezzi per ogni destinazione </h1>
+
+<div class="filter-banner">
+  <div class="filter-dropdown">
+    <a href="#" class="filter-toggle">Nazione ▼</a>
+    <div class="dropdown-content">
+      <%= form_with url: destinations_path, method: :get, local: true, class: "filter-form" do |f| %>
+        <%= f.select :country, options_for_select(["Tutte"] + Destination.distinct.pluck(:country), params[:country]), {}, { class: "filter-input", onchange: "this.form.submit();" } %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="filter-dropdown">
+    <%= link_to "Aereo", destinations_path(plane:true), class:"filter-toggle" %>
+  </div>
+
+  <div class="filter-dropdown">
+    <%= link_to "Treno", destinations_path(train:true), class:"filter-toggle" %>
+  </div>
+
+  <div class="filter-dropdown">
+    <%= link_to "Nave", destinations_path(ship:true), class:"filter-toggle" %>
+  </div>
+</div>
+
+
+<div class="destinations-grid">
+  <% @destinations.each do |destination| %>
+    <div class="destination">
+      <%= link_to destination_path(destination), class: "destination-link" do %>
+        <div class="destination-image">
+          <%= image_tag destination.image, alt: destination.name %>
+          <div class="overlay">
+            <span><%= destination.name %></span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

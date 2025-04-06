@@ -1,0 +1,87 @@
+<div class="attraction-show">
+    <div class="info-conntainer">
+        <p class="attr-title"> <%= @transport.name%> </p>
+        <p class="description"> <%= @transport.plate%>, <%= @transport.city%></p>
+
+        <div class="details">
+            
+            <div class="price">
+                <p><strong> Prezzo per un giorno: </strong><%= @transport.price%>€ </p>
+            </div>
+
+            <div class="booking">
+                <!-- Selezione data di arrivo -->
+                <div class="field">
+                    <label for="check_in_rent">Data di arrivo:</label>
+                    <%= date_field_tag :check_in_rent, nil, required: true %>
+                </div>
+        
+                <!-- Selezione data di partenza -->
+                <div class="field">
+                    <label for="check_out_rent">Data di partenza:</label>
+                    <%= date_field_tag :check_out_rent, nil, required: true %>
+                </div>
+
+                <!-- Numero di notti (da calcolare in base alle date) -->
+                <div class="field">
+                    <label for="days">Numero di giorni:</label>
+                    <input type="number" id="days" name="days" value="1" min="1" readonly>
+                </div>
+        
+                <!-- Totale da calcolare dinamicamente -->
+                <p><strong>Totale: </strong> <span id="total-rent"><%= number_to_currency(@transport.price, unit: "€") %></span></p>
+        
+                <!-- Modulo di prenotazione -->
+                <%= form_with model: @reservation, url: reservations_path, local: true do |form| %>
+                    <%= form.hidden_field :name_auto, value: @transport.name %>
+                    <%= form.hidden_field :check_in, id: "rent_check_in" %>
+                    <%= form.hidden_field :check_out, id: "rent_check_out" %>
+                    <%= form.hidden_field :days_counter, id: "rent_days_diff" %>
+
+                    <%= form.submit "Prenota", class: "sub-button" %>
+                <% end %>
+            </div>
+        </div>
+
+    </div>
+</div> 
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const checkInInput = document.getElementById("check_in_rent");
+  const checkOutInput = document.getElementById("check_out_rent");
+  const nightsInput = document.getElementById("days");
+  const totalSpan = document.getElementById("total-rent");
+  const formCheckIn = document.getElementById("rent_check_in");
+  const formCheckOut = document.getElementById("rent_check_out");
+  const formDaysDiff = document.getElementById("rent_days_diff");
+
+  // Funzione per calcolare la differenza tra due date in giorni e aggiornare il totale
+  function calculateTotal() {
+    const checkInDate = new Date(checkInInput.value);
+    const checkOutDate = new Date(checkOutInput.value);
+
+    // Verifica che entrambe le date siano valide
+    if (checkInDate && checkOutDate && checkInDate < checkOutDate) {
+      // Calcola la differenza in giorni
+      const timeDiff = checkOutDate - checkInDate;
+      const daysDiff = timeDiff / (1000 * 3600 * 24); // Converte da millisecondi a giorni
+
+      // Aggiorna il numero di notti, le date e il numero di persone
+      nightsInput.value = daysDiff;
+      formCheckIn.value = checkInInput.value;
+      formCheckOut.value = checkOutInput.value;
+      formDaysDiff.value = daysDiff;
+
+      // Calcola il totale
+      const pricePerNight = <%= @transport.price %>;
+      const totalPrice = pricePerNight * daysDiff;
+      totalSpan.textContent = totalPrice.toFixed(2) + "€";
+    }
+  }
+
+  // Aggiungi gli event listeners per aggiornare i calcoli quando le date o il numero di persone cambiano
+  checkInInput.addEventListener("change", calculateTotal);
+  checkOutInput.addEventListener("change", calculateTotal);
+});
+</script>

@@ -1,0 +1,171 @@
+<div class="contenitore-profilo mrt-4">
+  <h2 class="titles">Edit <%= resource_name.to_s.humanize %></h2>
+
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    
+    <div class="edit">
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <div class="field edit-field">
+        <%= f.label :username, "Username", class: "label-edit" %><br />
+        <%= f.text_field :username, autocomplete: "username", class: "input-edit" %>
+      </div>
+
+      <div class="field edit-field">
+        <%= f.label :email, class:"label-edit" %><br />
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class:"input-edit" %>
+      </div>
+
+      <div class="field edit-field">
+        <%= f.label :phone_number, "Numero di telefono", class: "label-edit" %><br />
+        <%= f.telephone_field :phone_number, autocomplete: "tel", class: "input-edit", placeholder: "Opzionale" %>
+      </div>
+
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+        <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+      <% end %>
+
+      <div class="edit-field">
+        <div class="field">
+          <%= f.label :password, class:"label-edit" %> <i>(Lascia vuoto se non vuoi modificare la password)</i>
+          <% if @minimum_password_length %>
+            <br />
+            <em><%= @minimum_password_length %> Caratteri minimi</em>
+          <% end %> <br />
+          <%= f.password_field :password, autocomplete: "new-password", class:"input-edit" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :password_confirmation, class:"label-edit" %><br />
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class:"input-edit" %>
+        </div>
+      </div>
+            <div class="field edit-field">
+        <div class="title">Carta di credito (Opzionale)</div>
+          <div class="field">
+            <%= f.label :card_number, "Numero carta", class: "label-edit" %>
+            <%= f.text_field :card_number, 
+                     class: "input-edit",
+                     placeholder: "1234 5678 9012 3456",
+                     maxlength: 19,
+                     data: { credit_card: "number" } %>
+          </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="field">
+              <%= f.label :card_expiry, "Scadenza", class: "label-edit" %>
+              <%= f.text_field :card_expiry, 
+                         class: "input-edit",
+                         placeholder: "MM/AA",
+                         maxlength: 5,
+                         data: { credit_card: "expiry" } %>
+            </div>
+          </div>
+    
+        <div class="col-md-6">
+          <div class="field">
+            <%= f.label :card_cvc, "CVC", class: "label-edit" %>
+            <%= f.text_field :card_cvc, 
+                             class: "input-edit",
+                             placeholder: "123",
+                             maxlength: 4,
+                             data: { credit_card: "cvc" } %>
+          </div>
+        </div>
+      </div>
+</div>
+      <div class="field edit-field">
+        <div class="field">
+          <%= f.label :current_password, class:"label-edit" %> <i>(Abbiamo bisogno della tua password per confermare le modifiche)</i><br />
+          <%= f.password_field :current_password, class:"input-edit" %>
+        </div>
+      </div>
+      
+      <div class="actions mt-5">
+        <%= f.submit "Update", class:"edit-button" %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if !current_user.business %>
+    <div class="edit">
+      <h3 class="edit-cancel-title">Account Business</h3>
+      <div class="actions mt-5">
+        <%= button_to "Passa a Business", request_upgrade_business_index_path, method: :post, class:"edit-button" %>
+      </div>
+    </div>
+  <% else %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <div class="edit">
+        <h3 class="edit-cancel-title">Account Business</h3>
+        <p class="edit-subtitle">Sei attualmente un account Business. Inserisci la password per tornare a account normale</p>
+        
+        <%= f.hidden_field :business_downgrade, value: true %>
+        
+        <div class="edit-field">
+          <div class="field">
+            <%= f.label :current_password, class:"label-edit" %><br />
+            <%= f.password_field :current_password, autocomplete: "current-password", class:"input-edit" %>
+          </div>
+        </div>
+        
+        <div class="actions mt-5">
+          <%= f.submit "Torna a Account Normale", class:"edit-button" %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="edit">
+    <h3 class="edit-cancel-title">Cancella Account</h3>
+    <div class="edit-field"><span class="label-edit">Scontento?</span> <%= button_to "Elimina", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class:"edit-cancel" %></div>
+  </div>
+
+<div class="edit">
+  <h3 class="edit-cancel-title">Notifiche</h3>
+<%= form_with(model: current_user, url: update_notification_preferences_user_path(current_user), method: :patch) do |f| %>
+  <div>
+    <%= f.check_box :discount_notifications %><br />
+    <%= f.label :discount_notifications, "Ricevi notifiche sugli sconti", class: "label-edit" %><br />
+  </div>
+  <div>
+    <%= f.check_box :structure_notifications %><br />
+    <%= f.label :structure_notifications, "Ricevi notifiche per aggiornamenti sulle strutture", class: "label-edit" %><br />
+  </div>
+  <%= f.submit "Salva modifiche" %>
+<% end %>
+</div>
+
+  <%= link_to "Back", :back, class:"edit-button", style:"width: 30%;" %>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const cardNumberField = document.querySelector('[data-credit-card="number"]');
+
+  if (cardNumberField) {
+    cardNumberField.addEventListener("input", function (e) {
+      let value = e.target.value.replace(/\D/g, ""); // Rimuove non numeri
+      value = value.substring(0, 16); // Max 16 cifre
+      const groups = value.match(/.{1,4}/g);
+      e.target.value = groups ? groups.join(" ") : "";
+    });
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const expiryField = document.querySelector('[data-credit-card="expiry"]');
+
+  if (expiryField) {
+    expiryField.addEventListener("input", function (e) {
+      let value = e.target.value.replace(/\D/g, "").slice(0, 4); // Solo numeri, max 4 cifre
+      if (value.length >= 3) {
+        e.target.value = value.slice(0, 2) + "/" + value.slice(2);
+      } else {
+        e.target.value = value;
+      }
+    });
+  }
+});
+
+</script>

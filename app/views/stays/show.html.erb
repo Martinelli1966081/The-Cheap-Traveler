@@ -1,0 +1,128 @@
+<div class="attraction-show">
+    <div class="img-container">
+        <% if @stay.image.attached? %>
+            <%= image_tag @stay.image, alt: @stay.name%>
+        <% else %>
+            <%= image_tag "struttura.png" %>
+        <% end %>
+    </div>
+
+    <div class="info-conntainer">
+        <p class="attr-title"> <%= @stay.name%> </p>
+        <p class="description"> <%= @stay.description%> </p>
+
+        <div class="details">
+            <p><strong> Paese: </strong><%= @stay.country%> </p>
+            <p><strong> Città: </strong><%= @stay.city%> </p>
+            <p><strong> Tipo di struttura: </strong><%= @stay.stay_type%> </p>
+            <p><strong> Contatto telefonico: </strong><%= @stay.tel%> </p>
+            
+            <div class="price">
+                <p><strong> Prezzo per una notte: </strong><%= @stay.price%>€ </p>
+            </div>
+
+            <div class="booking">
+                <!-- Selezione data di arrivo -->
+                <div class="field">
+                    <label for="check_in">Data di arrivo:</label>
+                    <%= date_field_tag :check_in, nil, required: true %>
+                </div>
+        
+                <!-- Selezione data di partenza -->
+                <div class="field">
+                    <label for="check_out">Data di partenza:</label>
+                    <%= date_field_tag :check_out, nil, required: true %>
+                </div>
+
+                <!-- Numero di persone -->
+                <div class="field">
+                    <label for="people">Numero di persone:</label>
+                    <input type="number" id="people" name="people" value="1" min="1" max="10">
+                </div>
+
+                <!-- Numero di notti (da calcolare in base alle date) -->
+                <div class="field">
+                    <label for="nights">Numero di notti:</label>
+                    <input type="number" id="nights" name="nights" value="1" min="1" readonly>
+                </div>
+
+                <div class="field">
+                    <label for="message">Messaggio con recapito:</label>
+                    <input type="text" id="message" name="message" placeholder="Inserisci un messaggio e un recapito se vuoi essere ricontattato per info sulla struttura">
+                </div>
+        
+                <!-- Totale da calcolare dinamicamente -->
+                <p><strong>Totale: </strong> <span id="total"><%= number_to_currency(@stay.price, unit: "€") %></span></p>
+        
+                <!-- Modulo di prenotazione -->
+                <%= form_with model: @reservation, url: reservations_path, local: true do |form| %>
+                    <%= form.hidden_field :name_stay, value: @stay.name %>
+                    <%= form.hidden_field :check_in, id: "reservation_check_in" %>
+                    <%= form.hidden_field :check_out, id: "reservation_check_out" %>
+                    <%= form.hidden_field :days_counter, id: "reservation_days_diff" %>
+                    <%= form.hidden_field :people, id: "reservation_people" %>
+                    
+                    <%= form.hidden_field :description, id: "reservation_message" %>
+
+                    <%= form.submit "Prenota", class: "sub-button" %>
+                <% end %>
+            </div>
+        </div>
+
+ 
+        <%=link_to "Torna alle strutture", stays_path, class:"back-button"%>
+
+    </div>
+</div> 
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const checkInInput = document.getElementById("check_in");
+  const checkOutInput = document.getElementById("check_out");
+  const nightsInput = document.getElementById("nights");
+  const totalSpan = document.getElementById("total");
+  const formCheckIn = document.getElementById("reservation_check_in");
+  const formCheckOut = document.getElementById("reservation_check_out");
+  const formDaysDiff = document.getElementById("reservation_days_diff");
+  const peopleInput = document.getElementById("people");
+  const formPeople = document.getElementById("reservation_people");
+  const formDescription = document.getElementById("reservation_message");
+  const descriptionInput = document.getElementById("message");
+
+  // Funzione per calcolare la differenza tra due date in giorni e aggiornare il totale
+  function calculateTotal() {
+    const checkInDate = new Date(checkInInput.value);
+    const checkOutDate = new Date(checkOutInput.value);
+
+    // Verifica che entrambe le date siano valide
+    if (checkInDate && checkOutDate && checkInDate < checkOutDate) {
+      // Calcola la differenza in giorni
+      const timeDiff = checkOutDate - checkInDate;
+      const daysDiff = timeDiff / (1000 * 3600 * 24); // Converte da millisecondi a giorni
+
+      // Ottieni il numero di persone
+      const peopleCount = parseInt(peopleInput.value);
+
+      // Aggiorna il numero di notti, le date e il numero di persone
+      nightsInput.value = daysDiff;
+      formCheckIn.value = checkInInput.value;
+      formCheckOut.value = checkOutInput.value;
+      formDaysDiff.value = daysDiff;
+      formPeople.value = peopleCount;
+      formDescription.value = descriptionInput.value;
+
+      // Calcola il totale
+      const pricePerNight = <%= @stay.price %>;
+      const totalPrice = pricePerNight * daysDiff * peopleCount;
+      totalSpan.textContent = totalPrice.toFixed(2) + "€";
+    }
+  }
+
+  // Aggiungi gli event listeners per aggiornare i calcoli quando le date o il numero di persone cambiano
+  checkInInput.addEventListener("change", calculateTotal);
+  checkOutInput.addEventListener("change", calculateTotal);
+  peopleInput.addEventListener("change", calculateTotal);
+  descriptionInput.addEventListener("change", calculateTotal);
+});
+</script>

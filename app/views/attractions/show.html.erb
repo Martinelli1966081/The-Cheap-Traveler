@@ -1,0 +1,24 @@
+<div class="attraction-show">
+    <div class="img-container">
+        <% if @attraction.image.attached? %>
+            <%= image_tag @attraction.image, alt: @attraction.name%>
+        <% else %>
+            <%= image_tag "struttura.png" %>
+        <% end %>
+    </div>
+
+    <div class="info-conntainer">
+        <p class="attr-title"> <%= @attraction.name%> </p>
+        <p class="description"> <%= @attraction.description%> </p>
+
+        <div class="details">
+            <p><strong> Paese: </strong><%= @attraction.country%> </p>
+            <p><strong> Città: </strong><%= @attraction.city%> </p>
+            <p><strong> Stagione di visita consigliata: </strong><%= @attraction.season%> </p>
+        </div>
+ 
+        <a href="<%= attractions_path %>" class="back-button"> Torna alle attrazioni </a>
+        <%=link_to "Vai alle strutture", stays_path, class:"back-button"%>
+
+    </div>
+</div> 

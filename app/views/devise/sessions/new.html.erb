@@ -1,0 +1,45 @@
+
+  <!DOCTYPE html>
+  <html lang="it">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>The Cheep Traveler</title>
+      <%= javascript_include_tag 'sign_in' %>
+      <!-- Includi il tag per il token CSRF -->
+      <%= csrf_meta_tags %>
+  </head>
+  <body>
+<div class="contenitore">
+
+  <!-- Form di accesso -->
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "struttura") do |f| %>
+    <div class="accedi">
+      <h2 class="form-title" id="accesso"> Accedi </h2>
+      <div class=" campi">
+        <%= f.email_field :email, class: "input", id: "email", autofocus: true, autocomplete: "email", placeholder: "E-mail" %>
+        <div class="hstack gap-5">
+          <%= f.password_field :password, class: "input", autocomplete: "new-password", required: true, id: 'user_password', placeholder:"Password" %>
+          <button type="button" class="btn btn-link-sm" id="toggle-password">Mostra</button>
+        </div>
+        <% if devise_mapping.rememberable? %>
+          <div class="input1 mb-3">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me, "Ricordami" %>
+          </div>
+        <% end %>
+      </div>
+      <%= f.submit "ACCEDI", class: "btn-invio" %>
+  <% end %>
+
+        <div class="registrati">
+            <!-- Link per la registrazione e il recupero password -->
+          <div class="devise-links">
+            <%= render "devise/shared/links" %>
+          </div>
+        </div>
+  </div>
+  
+  </body>
+
+  </html>

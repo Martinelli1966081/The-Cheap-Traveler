@@ -1,0 +1,48 @@
+<h1 class="titles" style="text-align:center"> Attrazioni turistiche </h1>
+
+<div class="filter-banner">
+
+  <div class="filter-dropdown">
+    <a href="#" class="filter-toggle">Stagione</a>
+    <div class="dropdown-content">
+      <%= form_with url: attractions_path, method: :get, local: true, class: "filter-form" do |f| %>
+        <%= f.select :season, options_for_select(["Tutte"] + Attraction.distinct.pluck(:season), params[:sseason]), {}, { class: "filter-input", onchange: "this.form.submit();" } %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="filter-dropdown">
+    <a href="#" class="filter-toggle">Città</a>
+    <div class="dropdown-content">
+      <%= form_with url: attractions_path, method: :get, local: true, class: "filter-form" do |f| %>
+        <%= f.select :city, options_for_select(["Tutte"] + Attraction.distinct.pluck(:city), params[:city]), {}, { class: "filter-input", onchange: "this.form.submit();" } %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="filter-dropdown">
+    <a href="#" class="filter-toggle">Nazione</a>
+    <div class="dropdown-content">
+      <%= form_with url: attractions_path, method: :get, local: true, class: "filter-form" do |f| %>
+        <%= f.select :country, options_for_select(["Tutte"] + Attraction.distinct.pluck(:country), params[:country]), {}, { class: "filter-input", onchange: "this.form.submit();" } %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="grid">
+    <% @attractions.each do |attraction| %>
+        <div class="attraction">
+        <%= link_to attraction_path(attraction) do%>
+            <% if attraction.image.attached? %>
+                <%= image_tag attraction.image %>
+            <% else %>
+                <%= image_tag "struttura.png" %>
+            <% end %>
+            <div class="overlay">
+                <span><%= attraction.name %> </span>
+            </div>
+        <%end%>
+        </div>
+    <%end%>
+</div>
