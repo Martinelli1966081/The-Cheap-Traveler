@@ -180,12 +180,12 @@ Devise.setup do |config|
 
   # ==> Configuration for :validatable
   # Range for password length.
-  config.password_length = 11..128  # Imposta esplicitamente il minimo a 11
+  config.password_length = 11..128  
   config.password_complexity = {
-    digit: 1,          # Almeno 1 numero
-    lower: 1,          # Almeno 1 minuscola
-    upper: 1,          # Almeno 1 maiuscola
-    symbol: 1,         # Almeno 1 carattere speciale
+    digit: 1,          
+    lower: 1,          
+    upper: 1,          
+    symbol: 1,         
   }
 
   # Email regex used to validate email formats. It simply asserts that

@@ -145,8 +145,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (cardNumberField) {
     cardNumberField.addEventListener("input", function (e) {
-      let value = e.target.value.replace(/\D/g, ""); // Rimuove non numeri
-      value = value.substring(0, 16); // Max 16 cifre
+      let value = e.target.value.replace(/\D/g, ""); 
+      value = value.substring(0, 16);
       const groups = value.match(/.{1,4}/g);
       e.target.value = groups ? groups.join(" ") : "";
     });
@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (expiryField) {
     expiryField.addEventListener("input", function (e) {
-      let value = e.target.value.replace(/\D/g, "").slice(0, 4); // Solo numeri, max 4 cifre
+      let value = e.target.value.replace(/\D/g, "").slice(0, 4); 
       if (value.length >= 3) {
         e.target.value = value.slice(0, 2) + "/" + value.slice(2);
       } else {

@@ -1,4 +1,3 @@
-# spec/features/user_can_book_a_stay_spec.rb
 require 'rails_helper'
 
 RSpec.feature "UserBooksAStay", type: :feature do

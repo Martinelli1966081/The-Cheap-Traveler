@@ -1,4 +1,3 @@
-# spec/controllers/reservations_controller_spec.rb
 require 'rails_helper'
 
 RSpec.describe ReservationsController, type: :controller do

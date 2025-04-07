@@ -6,13 +6,11 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>The Cheep Traveler</title>
       <%= javascript_include_tag 'sign_in' %>
-      <!-- Includi il tag per il token CSRF -->
       <%= csrf_meta_tags %>
   </head>
   <body>
 <div class="contenitore">
 
-  <!-- Form di accesso -->
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "struttura") do |f| %>
     <div class="accedi">
       <h2 class="form-title" id="accesso"> Accedi </h2>
@@ -33,7 +31,6 @@
   <% end %>
 
         <div class="registrati">
-            <!-- Link per la registrazione e il recupero password -->
           <div class="devise-links">
             <%= render "devise/shared/links" %>
           </div>

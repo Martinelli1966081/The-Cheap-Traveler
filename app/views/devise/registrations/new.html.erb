@@ -5,13 +5,11 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>The Cheep Traveler</title>
-      <!-- Includi il file JavaScript -->
       <%= javascript_include_tag 'sign_in' %>
-      <!-- Includi il tag per il token CSRF -->
       <%= csrf_meta_tags %>
   </head> 
   <body>
-    <!-- Visualizzazione degli errori di Devise -->
+    
   <% if alert %>
     <div class="alert alert-danger">
       <%= alert %>
@@ -21,7 +19,6 @@
   <%= render "devise/shared/custom_error_messages", resource: resource %>
 <div class="contenitore mrt-4">
 
-  <!-- Form di registrazione -->
   
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { id: "signup-form" }) do |f| %>
   <div class="accedi">
@@ -43,7 +40,6 @@
     </div>
   <% end %>
     <div class="registrati">
-          <!-- Link per il login -->
           <div class="devise-links">
               <%= render "devise/shared/links" %>
           </div>

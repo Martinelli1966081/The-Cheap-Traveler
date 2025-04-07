@@ -27,7 +27,7 @@ API abilitate da Google Cloud Console:
 3) Generare il database e popolarlo:
 - Per la generazione:
     Rails db:create db:migrate
--Per la popolazione del server, andare su rails console e importare i seguenti record:
+- Per la popolazione del server, andare su rails console e importare i seguenti record:
 
 attrazioni, strutture, destinazione:
 

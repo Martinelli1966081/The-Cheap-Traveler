@@ -9,7 +9,6 @@ class TaxisController < ApplicationController
   def create
     @taxi = current_user.taxis.new(taxi_params)
     
-    # Gestione data
     if params[:taxi][:day].present?
       begin
         @taxi.day = DateTime.parse(params[:taxi][:day])
@@ -18,8 +17,7 @@ class TaxisController < ApplicationController
         @taxi.errors.add(:day, 'Formato data non valido')
       end
     end
-    
-    # Calcola durata
+   
     if @taxi.partenza.present? && @taxi.arrivo.present?
       @taxi.duration = calculate_duration(@taxi.partenza, @taxi.arrivo)
     end

@@ -1,20 +1,14 @@
-# app/helpers/maps_helper.rb
 module MapsHelper
-  # Tipi di mappa validi
   VALID_MAP_TYPES = ['roadmap', 'satellite', 'terrain', 'hybrid'].freeze
   
-  # Modalità valide
   VALID_MODES = ['place', 'view', 'directions', 'search', 'streetview'].freeze
   def embed_google_map(location, options = {})
-    # Validazione dei parametri
     api_key = validate_api_key
     mode = validate_mode(options[:mode])
     maptype = validate_maptype(options[:maptype])
-    
-    # Costruzione dei parametri
+
     params = build_params(location, mode, maptype, options)
-    
-    # Generazione dell'iframe
+
     generate_iframe(params, options)
   rescue => e
     handle_error(e)
@@ -42,7 +36,7 @@ module MapsHelper
       language: options[:language],
       region: options[:region]
     }.compact
-    # Aggiungi parametri specifici per modalità
+    
     case mode
     when 'directions'
       params.merge!({
