@@ -133,7 +133,7 @@ GEM
       net-http (>= 0.5.0)
     ffi (1.17.1-x64-mingw-ucrt)
     ffi (1.17.1-x86_64-linux-gnu)
-    fiddle (1.1.6)
+    fiddle (1.1.7)
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
